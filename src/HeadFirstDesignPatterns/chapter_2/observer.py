@@ -8,7 +8,7 @@ if __name__ == '__main__':
     statistics_display = StatisticsDisplay(weather_data=w_data)
     forecast_display = ForecastDisplay(weather_data=w_data)
     heat_index_display = HeatIndexDisplay(weather_data=w_data)
-    line = "-" * 35
+    line = "-" * 60
     print(line)
     w_data.set_measurements(80, 65, 30.4)
     print(line)
@@ -22,4 +22,7 @@ if __name__ == '__main__':
     print(line)
     w_data.remove_observer(current_display)
     w_data.set_measurements(78, 90, 29.2)
+    print(line)
+    w_data.register_observer(statistics_display)
+    w_data.set_measurements(77, 78, 30.2)
     print(line)
