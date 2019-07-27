@@ -4,7 +4,7 @@ import abc
 class Observer(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def update(self, temperature, humidity, pressure):
+    def update(self, temperature: float, humidity: float, pressure: float):
         pass
 
 
@@ -18,11 +18,11 @@ class DisplayElement(metaclass=abc.ABCMeta):
 class Subject(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def register_observer(self, observer):
+    def register_observer(self, observer: Observer):
         pass
 
     @abc.abstractmethod
-    def remove_observer(self, observer):
+    def remove_observer(self, observer: Observer):
         pass
 
     @abc.abstractmethod

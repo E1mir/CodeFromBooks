@@ -1,14 +1,15 @@
 from HeadFirstDesignPatterns.chapter_2.interfaces import Observer, DisplayElement
+from HeadFirstDesignPatterns.chapter_2.models import WeatherData
 
 
 class CurrentConditionsDisplay(Observer, DisplayElement):
-    def __init__(self, weather_data):
+    def __init__(self, weather_data: WeatherData):
         self._temperature = None
         self._humidity = None
         self._weather_data = weather_data
         weather_data.register_observer(self)
 
-    def update(self, temperature, humidity, pressure):
+    def update(self, temperature: float, humidity: float, pressure: float):
         self._temperature = temperature
         self._humidity = humidity
         self.display()
@@ -18,7 +19,7 @@ class CurrentConditionsDisplay(Observer, DisplayElement):
 
 
 class StatisticsDisplay(Observer, DisplayElement):
-    def __init__(self, weather_data):
+    def __init__(self, weather_data: WeatherData):
         self._max_temp = 0
         self._min_temp = 200
         self._temp_sum = 0
@@ -28,7 +29,7 @@ class StatisticsDisplay(Observer, DisplayElement):
         self._weather_data = weather_data
         weather_data.register_observer(self)
 
-    def update(self, temperature, humidity, pressure):
+    def update(self, temperature: float, humidity: float, pressure: float):
         self._temp_sum += temperature
         self._num_readings += 1
         self._avg_temp = self._temp_sum / self._num_readings
@@ -43,12 +44,12 @@ class StatisticsDisplay(Observer, DisplayElement):
 
 
 class HeatIndexDisplay(Observer, DisplayElement):
-    def __init__(self, weather_data):
+    def __init__(self, weather_data: WeatherData):
         self._heat_index = 0
         self._weather_data = weather_data
         weather_data.register_observer(self)
 
-    def update(self, t, rh, pressure):
+    def update(self, t: float, rh: float, pressure: float):
         self._heat_index = self._compute_heat_index(t, rh)
         self.display()
 
@@ -56,7 +57,7 @@ class HeatIndexDisplay(Observer, DisplayElement):
         print(f"Heat index is {self._heat_index:.5f}")
 
     @staticmethod
-    def _compute_heat_index(t, rh):
+    def _compute_heat_index(t: float, rh: float):
         index = (
             (16.923 + (0.185212 * t) + (5.37941 * rh) - (0.100254 * t * rh) +
              (0.00941695 * (t ** 2)) + (0.00728898 * (rh ** 2)) +
@@ -71,14 +72,14 @@ class HeatIndexDisplay(Observer, DisplayElement):
 
 
 class ForecastDisplay(Observer, DisplayElement):
-    def __init__(self, weather_data):
+    def __init__(self, weather_data: WeatherData):
         self._current_pressure = 29.92
         self._last_pressure = None
 
         self._weather_data = weather_data
         weather_data.register_observer(self)
 
-    def update(self, temperature, humidity, pressure):
+    def update(self, temperature: float, humidity: float, pressure: float):
         self._last_pressure = self._current_pressure
         self._current_pressure = pressure
         self.display()

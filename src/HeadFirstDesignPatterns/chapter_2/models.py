@@ -1,17 +1,19 @@
-from HeadFirstDesignPatterns.chapter_2.interfaces import Subject
+from typing import List
+
+from HeadFirstDesignPatterns.chapter_2.interfaces import Subject, Observer
 
 
 class WeatherData(Subject):
     def __init__(self):
-        self._observers = []
+        self._observers: List[Observer] = []
         self._temperature = None
         self._humidity = None
         self._pressure = None
 
-    def register_observer(self, observer):
+    def register_observer(self, observer: Observer):
         self._observers.append(observer)
 
-    def remove_observer(self, observer):
+    def remove_observer(self, observer: Observer):
         self._observers.remove(observer)
 
     def notify_observers(self):
@@ -21,7 +23,7 @@ class WeatherData(Subject):
     def measurements_changed(self):
         self.notify_observers()
 
-    def set_measurements(self, temperature, humidity, pressure):
+    def set_measurements(self, temperature: float, humidity: float, pressure: float):
         self._temperature = temperature
         self._humidity = humidity
         self._pressure = pressure
