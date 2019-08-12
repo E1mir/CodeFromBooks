@@ -13,6 +13,7 @@ lazy-object-proxy==1.4.1
 MarkupSafe==1.1.1
 mccabe==0.6.1
 more-itertools==7.2.0
+mysql-connector==2.2.9
 packaging==19.0
 pep8==1.7.1
 pluggy==0.12.0
