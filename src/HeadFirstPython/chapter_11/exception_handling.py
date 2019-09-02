@@ -1,6 +1,6 @@
 from time import sleep
 
-from flask import Flask, render_template, request, session, copy_current_request_context
+from flask import Flask, render_template, request, session
 
 from HeadFirstPython.chapter_11.DBcm import UseDatabase, ConnectionError, CredentialsError, SQLError
 from HeadFirstPython.chapter_11.checker import check_logged_in
@@ -30,21 +30,30 @@ def do_logout() -> str:
     return 'You are now logged out.'
 
 
-@app.route('/search4', methods=['POST'])
-def do_search() -> 'html':
-    @copy_current_request_context
-    def log_request(req: 'flask_request', res: str) -> None:
-        sleep(15)  # This makes log_request really slow...
+def log_request(req: 'flask_request', res: str) -> None:
+    sleep(15)  # This makes log_request really slow...
+    try:
         with UseDatabase(app.config['dbconfig']) as cursor:
             _SQL = """INSERT INTO log
-                        (phrase, letters, ip, browser_string, results) VALUES 
-                        (%s, %s, %s, %s, %s)"""
+                            (phrase, letters, ip, browser_string, results) VALUES 
+                            (%s, %s, %s, %s, %s)"""
             cursor.execute(_SQL, (req.form['phrase'],
                                   req.form['letters'],
                                   req.remote_addr,
                                   req.user_agent.browser,
                                   res,))
+    except ConnectionError as err:
+        print('Is your database switched on? Error:', str(err))
+    except CredentialsError as err:
+        print('User-id/Password issues. Error:', str(err))
+    except SQLError as err:
+        print('Is your query correct? Error:', str(err))
+    except Exception as err:
+        print('Something went wrong:', str(err))
 
+
+@app.route('/search4', methods=['POST'])
+def do_search() -> 'html':
     phrase = request.form['phrase']
     letters = request.form['letters']
     title = 'Here are your results:'
