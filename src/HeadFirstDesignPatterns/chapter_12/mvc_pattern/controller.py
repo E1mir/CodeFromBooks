@@ -2,14 +2,12 @@ from HeadFirstDesignPatterns.chapter_12.mvc_pattern import view
 from HeadFirstDesignPatterns.chapter_12.mvc_pattern.model import Person
 
 
-def show_all():
-    # gets list of all Person objects
+def show_all() -> None:
     people_in_db = Person.get_all()
-    # calls view
     return view.show_all_view(people_in_db)
 
 
-def start():
+def start() -> None:
     view.start_view()
     user_input = input()
     if user_input == 'y':
